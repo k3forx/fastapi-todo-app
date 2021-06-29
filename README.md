@@ -1,5 +1,16 @@
 # fastapi-todo-app
 
+## ライブラリなどのバージョン
+
+バックエンド (Python)
+
+- Python: 3.9.x
+- FastAPI (フレームワーク): v0.65.2
+
+フロント (CSS と JavaScript)
+
+- bootstrap: v5.0.2
+
 ## 仮想環境の構築
 
 公式ドキュメントにしたがって仮想環境を構築していきます。
@@ -68,3 +79,7 @@ http://localhost:8000 にアクセスする。
 ## ORM
 
 https://docs.sqlalchemy.org/en/14/tutorial/engine.html
+
+## データベースの設定
+
+### Docker で MySQL で
