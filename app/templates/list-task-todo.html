@@ -1,0 +1,45 @@
+{% extends "base.layout.tmpl" %} {% block content %}
+<div class="card">
+  <div class="card-header">
+    <div>
+      優先度: 高
+      <div class="float-end">あと</div>
+    </div>
+  </div>
+  <div class="card-body">
+    <h5 class="card-title">買い物をする</h5>
+    <p class="card-text">1週間分の買い物をする</p>
+    <a href="/tasks/1" class="btn btn-outline-primary"
+      ><i class="bi bi-pencil"></i>編集</a
+    >
+    <a href="#" class="btn btn-outline-success"
+      ><i class="bi bi-check2-circle"></i>完了</a
+    >
+    <a href="#" class="btn btn btn-outline-danger float-end"
+      ><i class="bi bi-trash"></i
+    ></a>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-header">
+    <div>
+      優先度: 高
+      <div class="float-end">あと</div>
+    </div>
+  </div>
+  <div class="card-body">
+    <h5 class="card-title">ゴミ捨て</h5>
+    <p class="card-text">ゴミを捨てる</p>
+    <a href="#" class="btn btn-outline-primary"
+      ><i class="bi bi-pencil"></i>編集</a
+    >
+    <a href="#" class="btn btn-outline-success"
+      ><i class="bi bi-check2-circle"></i>完了</a
+    >
+    <a href="#" class="btn btn btn-outline-danger float-end"
+      ><i class="bi bi-trash"></i
+    ></a>
+  </div>
+</div>
+{% endblock %}
