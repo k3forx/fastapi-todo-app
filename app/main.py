@@ -26,4 +26,4 @@ def create_new_task(request: Request):
 @app.get("/tasks/{task_id}", response_class=HTMLResponse)
 def show_task_by_id(request: Request):
     print("edit a task")
-    return templates.TemplateResponse("task-edit.html", {"request": request})
+    return templates.TemplateResponse("task-edit.tmpl", {"request": request})
