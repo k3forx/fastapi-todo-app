@@ -1,7 +1,6 @@
 {% extends "base.layout.tmpl" %} {% block content %}
 <div class="container">
-  <h2 class="new-task-title text-center">編集</h2>
-
+  <h2 class="new-task-title text-center">新規作成</h2>
   <form method="" action="" class="" novalidate>
     <div class="new-task">
       <div class="mb-3">
@@ -30,9 +29,8 @@
         >
 
         <select class="form-select" aria-label="Default select example">
-          <option>優先度を選択</option>
+          <option selected>優先度を選択</option>
           <option value="1">高</option>
-          <!--If-->
           <option value="2">中</option>
           <option value="3">低</option>
         </select>
@@ -45,7 +43,6 @@
           class="form-control"
           id="due-date"
           placeholder="YYYY-MM-DD"
-          value="2020-02-01"
         />
       </div>
 
@@ -56,12 +53,9 @@
 {% endblock %} {% block js %}
 <script>
   const elem = document.getElementById("due-date");
-  console.log(elem.value);
-  if (elem.value == "") {
-    const datepicker = new Datepicker(elem, {
-      format: "yyyy-mm-dd",
-      minDate: new Date(),
-    });
-  }
+  const datepicker = new Datepicker(elem, {
+    format: "yyyy-mm-dd",
+    minDate: new Date(),
+  });
 </script>
 {% endblock %}
