@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- Bootstrap CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1"
+      crossorigin="anonymous"
+    />
+
+    <!-- Awesome icons-->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css"
+    />
+
+    <!-- Datepicker -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/vanillajs-datepicker@1.1.4/dist/css/datepicker.min.css"
+    />
+
+    <title>ToDo app</title>
+  </head>
+  <style>
+    .new-task-title {
+      margin-top: 0.5rem;
+    }
+    .new-task {
+      width: 1000px;
+      margin: 0 auto;
+      margin-top: 0.5rem;
+      padding-bottom: 0.5rem;
+    }
+    .bg-success {
+      color: #ffff;
+    }
+  </style>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="#">MyToDoApp</a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link" href="#">新規作成</a>
+            </li>
+
+            <li class="nav-item">
+              <a class="nav-link" href="#">未完了一覧</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <h2 class="new-task-title text-center">編集</h2>
+
+    <form method="" action="" class="" novalidate>
+      <div class="new-task">
+        <div class="mb-3">
+          <label for="exampleFormControlInput1" class="form-label"
+            >タイトル</label
+          >
+          <input
+            type="title"
+            class="form-control"
+            id="exampleFormControlInput1"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label for="exampleFormControlTextarea1" class="form-label"
+            >詳細</label
+          >
+          <textarea
+            class="form-control"
+            id="exampleFormControlTextarea1"
+            rows="5"
+          ></textarea>
+        </div>
+
+        <div class="mb-3">
+          <label for="exampleFormControlTextarea1" class="form-label"
+            >優先度</label
+          >
+
+          <select class="form-select" aria-label="Default select example">
+            <option>優先度を選択</option>
+            <option value="1">高</option>
+            <!--If-->
+            <option value="2">中</option>
+            <option value="3">低</option>
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label for="exampleFormControlTextarea1" class="form-label"
+            >期日</label
+          >
+          <input
+            type="text"
+            class="form-control"
+            id="due-date"
+            placeholder="YYYY-MM-DD"
+            value="2020-02-01"
+          />
+        </div>
+
+        <input type="submit" class="btn btn-primary float-end" value="保存" />
+      </div>
+    </form>
+  </body>
+</html>
+<script src="https://cdn.jsdelivr.net/npm/vanillajs-datepicker@1.1.4/dist/js/datepicker-full.min.js"></script>
+<script>
+  const elem = document.getElementById("due-date");
+  console.log(elem.value);
+  if (elem.value == "") {
+    const datepicker = new Datepicker(elem, {
+      format: "yyyy-mm-dd",
+      minDate: new Date(),
+    });
+  }
+</script>

@@ -1,4 +1,4 @@
 {
   "python.formatting.provider": "black",
-  "cSpell.words": ["fastapi", "uvicorn", "venv"]
+  "cSpell.words": ["Datepicker", "fastapi", "uvicorn", "venv"]
 }
