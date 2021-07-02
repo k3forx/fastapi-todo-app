@@ -11,5 +11,8 @@ def get_all_tasks(db: Session):
     return db.query(Task, Priority).outerjoin(Priority, Task.priority_id == Priority.id).all()
 
 
-def get_all_priorities(db: Session):
-    return db.query(Priority).all()
+def create_new_task(db: Session, task: Task):
+
+    db.add(task)
+    db.commit()
+    return

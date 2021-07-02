@@ -1,34 +1,27 @@
 {% extends "base.layout.tmpl" %} {% block content %}
 <div class="container">
   <h2 class="new-task-title text-center">新規作成</h2>
-  <form method="" action="" class="" novalidate>
+  <form method="POST" action="" class="" novalidate>
     <div class="new-task">
       <div class="mb-3">
-        <label for="exampleFormControlInput1" class="form-label"
-          >タイトル</label
-        >
-        <input
-          type="title"
-          class="form-control"
-          id="exampleFormControlInput1"
-        />
+        <label for="title" class="form-label">タイトル</label>
+        <input type="title" class="form-control" id="title" name="title" />
       </div>
 
       <div class="mb-3">
-        <label for="exampleFormControlTextarea1" class="form-label">詳細</label>
+        <label for="description" class="form-label">詳細</label>
         <textarea
           class="form-control"
-          id="exampleFormControlTextarea1"
+          id="description"
           rows="5"
+          name="description"
         ></textarea>
       </div>
 
       <div class="mb-3">
-        <label for="exampleFormControlTextarea1" class="form-label"
-          >優先度</label
-        >
+        <label for="priority_id" class="form-label">優先度</label>
 
-        <select class="form-select" aria-label="Default select example">
+        <select class="form-select" id="priority_id" name="priority_id">
           <option selected>優先度を選択</option>
           <option value="1">高</option>
           <option value="2">中</option>
@@ -37,11 +30,12 @@
       </div>
 
       <div class="mb-3">
-        <label for="exampleFormControlTextarea1" class="form-label">期日</label>
+        <label for="due_date" class="form-label">期日</label>
         <input
           type="text"
           class="form-control"
-          id="due-date"
+          id="due_date"
+          name="due_date"
           placeholder="YYYY-MM-DD"
         />
       </div>
@@ -52,7 +46,7 @@
 </div>
 {% endblock %} {% block js %}
 <script>
-  const elem = document.getElementById("due-date");
+  const elem = document.getElementById("due_date");
   const datepicker = new Datepicker(elem, {
     format: "yyyy-mm-dd",
     minDate: new Date(),

@@ -1,4 +1,4 @@
-from datetime import date, datetime
+from datetime import datetime
 from typing import Optional
 
 from pydantic import BaseModel
@@ -7,8 +7,8 @@ from pydantic import BaseModel
 class TaskBase(BaseModel):
     title: str
     description: str
-    priority_id: int
-    due_date: date
+    priority_id: str
+    due_date: str
 
 
 class TaskCreate(TaskBase):
