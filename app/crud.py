@@ -12,7 +12,12 @@ def get_all_tasks(db: Session):
 
 
 def create_new_task(db: Session, task: Task):
-
     db.add(task)
+    db.commit()
+    return
+
+
+def update_task_by_id(db: Session, task_id: int, updated_task: dict):
+    db.query(Task).filter(Task.id == task_id).update(updated_task)
     db.commit()
     return

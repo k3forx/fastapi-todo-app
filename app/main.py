@@ -71,3 +71,24 @@ def create_new_task(
 def show_task_by_id(request: Request, task_id: int, db: Session = Depends(get_db)):
     task = crud.get_task_by_id(db, task_id)
     return templates.TemplateResponse("task-edit.tmpl", {"request": request, "task": task})
+
+
+@app.post("/tasks/{task_id}")
+def edit_task_by_id(
+    task_id: int,
+    title: str = Form(...),
+    description: str = Form(...),
+    priority_id_str: str = Form(...),
+    due_date_str: str = Form(...),
+    db: Session = Depends(get_db),
+):
+    updated_task = {
+        "title": title,
+        "description": description,
+        "priority_id": int(priority_id_str),
+        "due_date": datetime.strptime(due_date_str, "%Y-%m-%d"),
+        "updated_at": datetime.now(),
+    }
+
+    crud.update_task_by_id(db, task_id, updated_task)
+    return RedirectResponse(url="/tasks", status_code=303)
