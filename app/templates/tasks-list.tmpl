@@ -1,47 +1,37 @@
 {% extends "base.layout.tmpl" %} {% block content %}
 <div class="container">
+  {% for task_priority in tasks_priorities %} {% set task = task_priority[0] %}
+  {% set priority = task_priority[1] %}
   <div class="card">
     <div class="card-header">
       <div>
-        優先度: 高
-        <div class="float-end">あと</div>
+        優先度: {{ priority.priority }}
+        <div class="float-end">
+          あと{{ calc_remaining_days(task.due_date) }}日
+        </div>
       </div>
     </div>
     <div class="card-body">
-      <h5 class="card-title">買い物をする</h5>
-      <p class="card-text">1週間分の買い物をする</p>
-      <a href="/tasks/1" class="btn btn-outline-primary"
+      <h5 class="card-title">{{ task.title }}</h5>
+      <p class="card-text">{{ task.description }}</p>
+      <a href="/tasks/{{ task.id }}" class="btn btn-outline-primary"
         ><i class="bi bi-pencil"></i>編集</a
       >
-      <a href="#" class="btn btn-outline-success"
-        ><i class="bi bi-check2-circle"></i>完了</a
+      <button
+        class="btn btn-outline-success"
+        type="submit"
+        formaction="/tasks/{{ task.id }}"
+        onclick="deleteTaskById()"
       >
+        <i class="bi bi-check2-circle"></i>完了
+      </button>
       <a href="#" class="btn btn btn-outline-danger float-end"
         ><i class="bi bi-trash"></i
       ></a>
     </div>
   </div>
-
-  <div class="card">
-    <div class="card-header">
-      <div>
-        優先度: 高
-        <div class="float-end">あと</div>
-      </div>
-    </div>
-    <div class="card-body">
-      <h5 class="card-title">ゴミ捨て</h5>
-      <p class="card-text">ゴミを捨てる</p>
-      <a href="#" class="btn btn-outline-primary"
-        ><i class="bi bi-pencil"></i>編集</a
-      >
-      <a href="#" class="btn btn-outline-success"
-        ><i class="bi bi-check2-circle"></i>完了</a
-      >
-      <a href="#" class="btn btn btn-outline-danger float-end"
-        ><i class="bi bi-trash"></i
-      ></a>
-    </div>
-  </div>
+  {% endfor %}
 </div>
+{% endblock %} {% block js %}
+<script></script>
 {% endblock %}

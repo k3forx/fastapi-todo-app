@@ -8,20 +8,12 @@
         <label for="exampleFormControlInput1" class="form-label"
           >タイトル</label
         >
-        <input
-          type="title"
-          class="form-control"
-          id="exampleFormControlInput1"
-        />
+        <input type="title" class="form-control" value="{{ task.title }}" />
       </div>
 
       <div class="mb-3">
         <label for="exampleFormControlTextarea1" class="form-label">詳細</label>
-        <textarea
-          class="form-control"
-          id="exampleFormControlTextarea1"
-          rows="5"
-        ></textarea>
+        <textarea class="form-control" rows="5" value=>{{ task.description }}</textarea>
       </div>
 
       <div class="mb-3">
@@ -31,10 +23,10 @@
 
         <select class="form-select" aria-label="Default select example">
           <option>優先度を選択</option>
-          <option value="1">高</option>
-          <!--If-->
-          <option value="2">中</option>
-          <option value="3">低</option>
+          <!-- TODO: Remove similar code -->
+          <option value="1" {% if task.priority_id == 1 %} selected {% endif %}>高</option>
+          <option value="2" {% if task.priority_id == 2 %} selected {% endif %}>中</option>
+          <option value="3" {% if task.priority_id == 3 %} selected {% endif %}>低</option>
         </select>
       </div>
 
@@ -45,7 +37,7 @@
           class="form-control"
           id="due-date"
           placeholder="YYYY-MM-DD"
-          value="2020-02-01"
+          value="{{ task.due_date }}"
         />
       </div>
 
@@ -56,12 +48,10 @@
 {% endblock %} {% block js %}
 <script>
   const elem = document.getElementById("due-date");
-  console.log(elem.value);
-  if (elem.value == "") {
-    const datepicker = new Datepicker(elem, {
-      format: "yyyy-mm-dd",
-      minDate: new Date(),
-    });
-  }
+  const datepicker = new Datepicker(elem, {
+    format: "yyyy-mm-dd",
+    minDate: new Date(),
+    defaultViewDate: elem.value,
+  });
 </script>
 {% endblock %}
