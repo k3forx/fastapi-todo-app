@@ -54,15 +54,14 @@ def create_new_task(
     due_date_str: str = Form(...),
     db: Session = Depends(get_db),
 ):
-    priority_id = int(priority_id_str)
-    due_date = datetime.strptime(due_date_str, "%Y-%m-%d")
-    task = Task()
-    task.title = title
-    task.description = description
-    task.priority_id = priority_id
-    task.due_date = due_date
-    task.created_at = datetime.now()
-    task.updated_at = datetime.now()
+    task = Task(
+        title=title,
+        description=description,
+        priority_id=int(priority_id_str),
+        due_date=datetime.strptime(due_date_str, "%Y-%m-%d"),
+        created_at=datetime.now(),
+        updated_at=datetime.now(),
+    )
 
     crud.create_new_task(db, task)
     return RedirectResponse(url="/tasks", status_code=303)
