@@ -5,6 +5,7 @@
     "fastapi",
     "pydantic",
     "pymysql",
+    "starlette",
     "uvicorn",
     "venv"
   ]

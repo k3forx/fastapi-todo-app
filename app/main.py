@@ -1,12 +1,13 @@
-from datetime import date
+from datetime import date, datetime
 
-from fastapi import Depends, FastAPI, Request
-from fastapi.responses import HTMLResponse
+from fastapi import Depends, FastAPI, Form, Request
+from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.templating import Jinja2Templates
 from sqlalchemy.orm import Session
 
 from app import crud
 from app.database import SessionLocal
+from app.models import Task
 
 templates = Jinja2Templates(directory="app/templates")
 app = FastAPI()
@@ -41,9 +42,29 @@ def show_all_tasks(request: Request, db: Session = Depends(get_db)):
 
 
 @app.get("/tasks/new", response_class=HTMLResponse)
-def create_new_task(request: Request):
-    print("create new task")
+def show_create_new_task(request: Request):
     return templates.TemplateResponse("task-new.tmpl", {"request": request})
+
+
+@app.post("/tasks/new")
+def create_new_task(
+    title: str = Form(...),
+    description: str = Form(...),
+    priority_id_str: str = Form(...),
+    due_date_str: str = Form(...),
+    db: Session = Depends(get_db),
+):
+    task = Task(
+        title=title,
+        description=description,
+        priority_id=int(priority_id_str),
+        due_date=datetime.strptime(due_date_str, "%Y-%m-%d"),
+        created_at=datetime.now(),
+        updated_at=datetime.now(),
+    )
+
+    crud.create_new_task(db, task)
+    return RedirectResponse(url="/tasks", status_code=303)
 
 
 @app.get("/tasks/{task_id}", response_class=HTMLResponse)
