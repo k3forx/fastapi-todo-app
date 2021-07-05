@@ -76,6 +76,12 @@ http://localhost:8000 にアクセスする。
 さらに http://localhost:8000/docs にアクセスする。
 ![image](https://user-images.githubusercontent.com/45956169/123547668-9a634880-d79c-11eb-82b4-de7316a6173c.png)
 
+## Unit test
+
+```bash
+❯ pytest -vvvs --cov=unit_test --cov-report=term-missing unit_test
+```
+
 ## ORM
 
 https://docs.sqlalchemy.org/en/14/tutorial/engine.html
