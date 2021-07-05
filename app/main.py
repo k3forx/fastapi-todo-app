@@ -5,6 +5,7 @@ import pandas as pd
 from fastapi import Depends, FastAPI, Form, Request, status
 from fastapi.responses import HTMLResponse, JSONResponse, RedirectResponse, StreamingResponse
 from fastapi.templating import Jinja2Templates
+from prometheus_fastapi_instrumentator import Instrumentator
 from sqlalchemy.orm import Session
 
 from app import crud
@@ -13,6 +14,7 @@ from app.models import Task
 
 templates = Jinja2Templates(directory="app/templates")
 app = FastAPI()
+Instrumentator().instrument(app).expose(app)
 
 
 @app.get("/")
