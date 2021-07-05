@@ -5,4 +5,4 @@ exclude =
     */test_*
     unit_tests/*
     lib
-ignore = W504,E203,D
+ignore = W503,E203,D

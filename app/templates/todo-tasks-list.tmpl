@@ -1,11 +1,10 @@
 {% extends "base.layout.tmpl" %} {% block content %}
 <div class="container">
-  {% for task_priority in tasks_priorities %} {% set task = task_priority[0] %}
-  {% set priority = task_priority[1] %}
+  {% for task in tasks %}
   <div class="card">
     <div class="card-header">
       <div>
-        優先度: {{ priority.priority }}
+        優先度: {{ task.priority }}
         <div class="float-end">
           あと{{ calc_remaining_days(task.due_date) }}日
         </div>

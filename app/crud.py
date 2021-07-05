@@ -1,7 +1,6 @@
+from models import Priority, Task
 from sqlalchemy import asc
 from sqlalchemy.orm import Session
-
-from app.models import Priority, Task
 
 
 def get_task_by_id(db: Session, task_id: int):
@@ -10,7 +9,7 @@ def get_task_by_id(db: Session, task_id: int):
 
 def get_all_todo_tasks(db: Session):
     return (
-        db.query(Task, Priority)
+        db.query(Task.id, Task.title, Task.description, Priority.priority, Task.due_date)
         .filter(Task.completed_at.is_(None), Task.is_disabled.is_(False))
         .outerjoin(Priority, Task.priority_id == Priority.id)
         .order_by(asc(Task.priority_id), asc(Task.due_date))
@@ -18,9 +17,9 @@ def get_all_todo_tasks(db: Session):
     )
 
 
-def get_all_done_tasks(db: Session):
+def get_all_completed_tasks(db: Session):
     return (
-        db.query(Task, Priority)
+        db.query(Task.id, Task.title, Task.description, Priority.priority, Task.due_date)
         .filter(Task.completed_at.isnot(None), Task.is_disabled.is_(False))
         .outerjoin(Priority, Task.priority_id == Priority.id)
         .order_by(asc(Task.priority_id), asc(Task.due_date))

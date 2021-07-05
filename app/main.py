@@ -1,18 +1,16 @@
-import io
+import csv
 from datetime import date, datetime
 
-import pandas as pd
+import crud
+from database import SessionLocal
 from fastapi import Depends, FastAPI, Form, Request, status
-from fastapi.responses import HTMLResponse, JSONResponse, RedirectResponse, StreamingResponse
+from fastapi.responses import FileResponse, HTMLResponse, JSONResponse, RedirectResponse
 from fastapi.templating import Jinja2Templates
+from models import Task
 from prometheus_fastapi_instrumentator import Instrumentator
 from sqlalchemy.orm import Session
 
-from app import crud
-from app.database import SessionLocal, engine
-from app.models import Task
-
-templates = Jinja2Templates(directory="app/templates")
+templates = Jinja2Templates(directory="templates")
 app = FastAPI()
 Instrumentator().instrument(app).expose(app)
 
@@ -38,16 +36,16 @@ def calc_remaining_days(due_date: date):
 
 @app.get("/tasks", response_class=HTMLResponse)
 def show_all_tasks(request: Request, db: Session = Depends(get_db)):
-    tasks_priorities = crud.get_all_todo_tasks(db)
+    tasks = crud.get_all_todo_tasks(db)
     return templates.TemplateResponse(
         "todo-tasks-list.tmpl",
-        {"request": request, "tasks_priorities": tasks_priorities, "calc_remaining_days": calc_remaining_days},
+        {"request": request, "tasks": tasks, "calc_remaining_days": calc_remaining_days},
     )
 
 
 @app.get("/completed-tasks", response_class=HTMLResponse)
 def show_all_completed_tasks(request: Request, db: Session = Depends(get_db)):
-    tasks_priorities = crud.get_all_done_tasks(db)
+    tasks_priorities = crud.get_all_completed_tasks(db)
     return templates.TemplateResponse(
         "done-tasks-list.tmpl",
         {"request": request, "tasks_priorities": tasks_priorities, "calc_remaining_days": calc_remaining_days},
@@ -127,68 +125,28 @@ def disable_task_by_id(task_id: int, db: Session = Depends(get_db)):
 
 
 @app.get("/tasks/download/todo")
-def download_todo_tasks():
-    sql = """
-        SELECT
-            t.id,
-            p.priority,
-            t.title,
-            t.description,
-            t.due_date,
-            t.created_at,
-            t.updated_at
-        FROM
-            tasks AS t
-        LEFT JOIN
-            priorities AS p
-        ON
-            t.priority_id = p.id
-        WHERE
-            t.completed_at IS NULL
-            AND
-                t.is_disabled = 0
-        ORDER BY
-            t.priority_id ASC, t.due_date ASC;
-    """
-    df = pd.read_sql_query(sql=sql, con=engine)
-    stream = io.StringIO()
-    df.to_csv(stream)
-    response = StreamingResponse(iter([stream.getvalue()]), media_type="text/csv")
-
+def download_todo_tasks(db: Session = Depends(get_db)):
+    tasks = crud.get_all_todo_tasks(db)
     current_datetime = datetime.now().strftime("%Y%m%d_%H%M%S")
-    response.headers["Content-Disposition"] = f"attachment; filename={current_datetime}_todo_tasks.csv"
-    return response
+    file = f"{current_datetime}_todo_tasks.csv"
+
+    with open(file, "w") as exported_file:
+        writer = csv.writer(exported_file)
+        writer.writerow(["", "id", "priority", "title", "description", "due_date"])
+        for index, task in enumerate(tasks):
+            writer.writerow([index, task.id, task.priority, task.title, task.description, task.due_date])
+        return FileResponse(file, filename=file)
 
 
 @app.get("/tasks/download/completed")
-def download_completed_tasks():
-    sql = """
-        SELECT
-            t.id,
-            p.priority,
-            t.title,
-            t.description,
-            t.due_date,
-            t.created_at,
-            t.updated_at
-        FROM
-            tasks AS t
-        LEFT JOIN
-            priorities AS p
-        ON
-            t.priority_id = p.id
-        WHERE
-            t.completed_at IS NOT NULL
-            AND
-                t.is_disabled = 0
-        ORDER BY
-            t.priority_id ASC, t.due_date ASC;
-    """
-    df = pd.read_sql_query(sql=sql, con=engine)
-    stream = io.StringIO()
-    df.to_csv(stream)
-    response = StreamingResponse(iter([stream.getvalue()]), media_type="text/csv")
-
+def download_completed_tasks(db: Session = Depends(get_db)):
+    tasks = crud.get_all_completed_tasks(db)
     current_datetime = datetime.now().strftime("%Y%m%d_%H%M%S")
-    response.headers["Content-Disposition"] = f"attachment; filename={current_datetime}_completed_tasks.csv"
-    return response
+    file = f"{current_datetime}_completed_tasks.csv"
+
+    with open(file, "w") as exported_file:
+        writer = csv.writer(exported_file)
+        writer.writerow(["", "id", "priority", "title", "description", "due_date"])
+        for index, task in enumerate(tasks):
+            writer.writerow([index, task.id, task.priority, task.title, task.description, task.due_date])
+        return FileResponse(file, filename=file)

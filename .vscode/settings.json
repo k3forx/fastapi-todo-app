@@ -3,6 +3,7 @@
   "cSpell.words": [
     "Datepicker",
     "fastapi",
+    "getenv",
     "instrumentator",
     "isnot",
     "pydantic",
