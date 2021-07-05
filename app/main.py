@@ -1,12 +1,14 @@
+import io
 from datetime import date, datetime
 
+import pandas as pd
 from fastapi import Depends, FastAPI, Form, Request, status
-from fastapi.responses import HTMLResponse, JSONResponse, RedirectResponse
+from fastapi.responses import HTMLResponse, JSONResponse, RedirectResponse, StreamingResponse
 from fastapi.templating import Jinja2Templates
 from sqlalchemy.orm import Session
 
 from app import crud
-from app.database import SessionLocal
+from app.database import SessionLocal, engine
 from app.models import Task
 
 templates = Jinja2Templates(directory="app/templates")
@@ -120,3 +122,71 @@ def update_task_as_uncompleted(task_id: int, db: Session = Depends(get_db)):
 def disable_task_by_id(task_id: int, db: Session = Depends(get_db)):
     crud.disabled_task(db, task_id)
     return JSONResponse(status_code=status.HTTP_200_OK, content={"message": "ok"})
+
+
+@app.get("/tasks/download/todo")
+def download_todo_tasks():
+    sql = """
+        SELECT
+            t.id,
+            p.priority,
+            t.title,
+            t.description,
+            t.due_date,
+            t.created_at,
+            t.updated_at
+        FROM
+            tasks AS t
+        LEFT JOIN
+            priorities AS p
+        ON
+            t.priority_id = p.id
+        WHERE
+            t.completed_at IS NULL
+            AND
+                t.is_disabled = 0
+        ORDER BY
+            t.priority_id ASC, t.due_date ASC;
+    """
+    df = pd.read_sql_query(sql=sql, con=engine)
+    stream = io.StringIO()
+    df.to_csv(stream)
+    response = StreamingResponse(iter([stream.getvalue()]), media_type="text/csv")
+
+    current_datetime = datetime.now().strftime("%Y%m%d_%H%M%S")
+    response.headers["Content-Disposition"] = f"attachment; filename={current_datetime}_todo_tasks.csv"
+    return response
+
+
+@app.get("/tasks/download/completed")
+def download_completed_tasks():
+    sql = """
+        SELECT
+            t.id,
+            p.priority,
+            t.title,
+            t.description,
+            t.due_date,
+            t.created_at,
+            t.updated_at
+        FROM
+            tasks AS t
+        LEFT JOIN
+            priorities AS p
+        ON
+            t.priority_id = p.id
+        WHERE
+            t.completed_at IS NOT NULL
+            AND
+                t.is_disabled = 0
+        ORDER BY
+            t.priority_id ASC, t.due_date ASC;
+    """
+    df = pd.read_sql_query(sql=sql, con=engine)
+    stream = io.StringIO()
+    df.to_csv(stream)
+    response = StreamingResponse(iter([stream.getvalue()]), media_type="text/csv")
+
+    current_datetime = datetime.now().strftime("%Y%m%d_%H%M%S")
+    response.headers["Content-Disposition"] = f"attachment; filename={current_datetime}_todo_tasks.csv"
+    return response
