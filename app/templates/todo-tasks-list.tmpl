@@ -26,9 +26,13 @@
         <i class="bi bi-check2-circle"></i>完了
       </button>
 
-      <a href="#" class="btn btn btn-outline-danger float-end"
-        ><i class="bi bi-trash"></i
-      ></a>
+      <button
+        class="btn btn-outline-danger float-end"
+        type="button"
+        onclick="disableTaskByID({{ task.id }})"
+      >
+        <i class="bi bi-trash"></i>
+      </button>
     </div>
   </div>
   {% endfor %}
@@ -39,6 +43,21 @@
     var formData = new FormData();
     formData.append("task_id", taskId);
     fetch("/tasks/" + taskId + "/completed", {
+      method: "PUT",
+      body: formData,
+      redirect: "follow",
+    }).then((response) => {
+      if (response.ok) {
+        console.log("ok");
+        window.location.href = "/tasks";
+      }
+    });
+  }
+
+  function disableTaskByID(taskId) {
+    var formData = new FormData();
+    formData.append("task_id", taskId);
+    fetch("/tasks/" + taskId + "/disabled", {
       method: "PUT",
       body: formData,
       redirect: "follow",

@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Date, DateTime, Integer, String
+from sqlalchemy import Boolean, Column, Date, DateTime, Integer, String
 
 from app.database import Base
 
@@ -23,3 +23,4 @@ class Task(Base):
     created_at = Column(DateTime, nullable=False)
     updated_at = Column(DateTime, nullable=False)
     completed_at = Column(DateTime)
+    is_disabled = Column(Boolean, nullable=False)
