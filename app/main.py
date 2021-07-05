@@ -1,7 +1,7 @@
 from datetime import date, datetime
 
-from fastapi import Depends, FastAPI, Form, Request
-from fastapi.responses import HTMLResponse, RedirectResponse
+from fastapi import Depends, FastAPI, Form, Request, status
+from fastapi.responses import HTMLResponse, JSONResponse, RedirectResponse
 from fastapi.templating import Jinja2Templates
 from sqlalchemy.orm import Session
 
@@ -34,9 +34,18 @@ def calc_remaining_days(due_date: date):
 
 @app.get("/tasks", response_class=HTMLResponse)
 def show_all_tasks(request: Request, db: Session = Depends(get_db)):
-    tasks_priorities = crud.get_all_tasks(db)
+    tasks_priorities = crud.get_all_todo_tasks(db)
     return templates.TemplateResponse(
-        "tasks-list.tmpl",
+        "todo-tasks-list.tmpl",
+        {"request": request, "tasks_priorities": tasks_priorities, "calc_remaining_days": calc_remaining_days},
+    )
+
+
+@app.get("/completed-tasks", response_class=HTMLResponse)
+def show_all_completed_tasks(request: Request, db: Session = Depends(get_db)):
+    tasks_priorities = crud.get_all_done_tasks(db)
+    return templates.TemplateResponse(
+        "done-tasks-list.tmpl",
         {"request": request, "tasks_priorities": tasks_priorities, "calc_remaining_days": calc_remaining_days},
     )
 
@@ -62,7 +71,6 @@ def create_new_task(
         created_at=datetime.now(),
         updated_at=datetime.now(),
     )
-
     crud.create_new_task(db, task)
     return RedirectResponse(url="/tasks", status_code=303)
 
@@ -92,3 +100,16 @@ def edit_task_by_id(
 
     crud.update_task_by_id(db, task_id, updated_task)
     return RedirectResponse(url="/tasks", status_code=303)
+
+
+@app.put("/tasks/{task_id}/completed")
+def update_task_as_completed(task_id: int, db: Session = Depends(get_db)):
+    completed_date = datetime.now()
+    crud.update_task_completed_time(db, task_id, {"completed_at": completed_date})
+    return JSONResponse(status_code=status.HTTP_200_OK, content={"message": "ok"})
+
+
+@app.put("/tasks/{task_id}/uncompleted")
+def update_task_as_uncompleted(task_id: int, db: Session = Depends(get_db)):
+    crud.update_task_completed_time(db, task_id, {"completed_at": None})
+    return JSONResponse(status_code=status.HTTP_200_OK, content={"message": "ok"})
