@@ -70,6 +70,7 @@ def create_new_task(
         due_date=datetime.strptime(due_date_str, "%Y-%m-%d"),
         created_at=datetime.now(),
         updated_at=datetime.now(),
+        is_disabled=False,
     )
     crud.create_new_task(db, task)
     return RedirectResponse(url="/tasks", status_code=303)
@@ -112,4 +113,10 @@ def update_task_as_completed(task_id: int, db: Session = Depends(get_db)):
 @app.put("/tasks/{task_id}/uncompleted")
 def update_task_as_uncompleted(task_id: int, db: Session = Depends(get_db)):
     crud.update_task_completed_time(db, task_id, {"completed_at": None})
+    return JSONResponse(status_code=status.HTTP_200_OK, content={"message": "ok"})
+
+
+@app.put("/tasks/{task_id}/disabled")
+def disable_task_by_id(task_id: int, db: Session = Depends(get_db)):
+    crud.disabled_task(db, task_id)
     return JSONResponse(status_code=status.HTTP_200_OK, content={"message": "ok"})

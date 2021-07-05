@@ -3,6 +3,7 @@
   "cSpell.words": [
     "Datepicker",
     "fastapi",
+    "isnot",
     "pydantic",
     "pymysql",
     "starlette",
