@@ -1,0 +1,48 @@
+{% extends "base.layout.tmpl" %} {% block content %}
+<div class="container">
+  {% for task_priority in tasks_priorities %} {% set task = task_priority[0] %}
+  {% set priority = task_priority[1] %}
+  <div class="card">
+    <div class="card-header bg-success text-white">
+      <div>完了済み</div>
+    </div>
+    <div class="card-body">
+      <h5 class="card-title">{{ task.title }}</h5>
+      <p class="card-text">{{ task.description }}</p>
+      <a href="/tasks/{{ task.id }}" class="btn btn-outline-primary"
+        ><i class="bi bi-pencil"></i>編集</a
+      >
+
+      <button
+        class="btn btn-outline-success"
+        type="button"
+        onclick="backTaskToTodoById({{ task.id }})"
+      >
+        <i class="bi bi-check2-circle"></i>未完了に戻す
+      </button>
+
+      <a href="#" class="btn btn btn-outline-danger float-end"
+        ><i class="bi bi-trash"></i
+      ></a>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% endblock %} {% block js %}
+<script>
+  function backTaskToTodoById(taskId) {
+    var formData = new FormData();
+    formData.append("task_id", taskId);
+    fetch("/tasks/" + taskId + "/uncompleted", {
+      method: "PUT",
+      body: formData,
+      redirect: "follow",
+    }).then((response) => {
+      if (response.ok) {
+        console.log("ok");
+        window.location.href = "/tasks";
+      }
+    });
+  }
+</script>
+{% endblock %}

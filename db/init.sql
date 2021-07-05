@@ -18,6 +18,7 @@ CREATE TABLE IF NOT EXISTS tasks (
   created_at DATETIME NOT NULL,
   updated_at DATETIME NOT NULL,
   completed_at DATETIME,
+  is_disabled BOOLEAN NOT NULL DEFAULT FALSE,
   PRIMARY KEY (id),
   INDEX idx_id (id),
   FOREIGN KEY (priority_id) REFERENCES priorities (id)

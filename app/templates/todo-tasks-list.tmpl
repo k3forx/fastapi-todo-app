@@ -17,14 +17,15 @@
       <a href="/tasks/{{ task.id }}" class="btn btn-outline-primary"
         ><i class="bi bi-pencil"></i>編集</a
       >
+
       <button
         class="btn btn-outline-success"
-        type="submit"
-        formaction="/tasks/{{ task.id }}"
-        onclick="deleteTaskById()"
+        type="button"
+        onclick="completedTaskById({{ task.id }})"
       >
         <i class="bi bi-check2-circle"></i>完了
       </button>
+
       <a href="#" class="btn btn btn-outline-danger float-end"
         ><i class="bi bi-trash"></i
       ></a>
@@ -33,5 +34,20 @@
   {% endfor %}
 </div>
 {% endblock %} {% block js %}
-<script></script>
+<script>
+  function completedTaskById(taskId) {
+    var formData = new FormData();
+    formData.append("task_id", taskId);
+    fetch("/tasks/" + taskId + "/completed", {
+      method: "PUT",
+      body: formData,
+      redirect: "follow",
+    }).then((response) => {
+      if (response.ok) {
+        console.log("ok");
+        window.location.href = "/tasks";
+      }
+    });
+  }
+</script>
 {% endblock %}
