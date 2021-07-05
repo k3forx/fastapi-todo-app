@@ -188,5 +188,5 @@ def download_completed_tasks():
     response = StreamingResponse(iter([stream.getvalue()]), media_type="text/csv")
 
     current_datetime = datetime.now().strftime("%Y%m%d_%H%M%S")
-    response.headers["Content-Disposition"] = f"attachment; filename={current_datetime}_todo_tasks.csv"
+    response.headers["Content-Disposition"] = f"attachment; filename={current_datetime}_completed_tasks.csv"
     return response
