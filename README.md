@@ -83,3 +83,9 @@ https://docs.sqlalchemy.org/en/14/tutorial/engine.html
 ## データベースの設定
 
 ### Docker で MySQL で
+
+## Prometheus
+
+```bash
+❯ curl -X POST http://localhost:9090/-/reload
+```
