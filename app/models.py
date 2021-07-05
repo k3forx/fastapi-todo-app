@@ -1,6 +1,5 @@
+from database import Base
 from sqlalchemy import Boolean, Column, Date, DateTime, Integer, String
-
-from app.database import Base
 
 
 class Priority(Base):

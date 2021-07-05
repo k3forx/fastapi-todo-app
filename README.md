@@ -89,3 +89,12 @@ https://docs.sqlalchemy.org/en/14/tutorial/engine.html
 ```bash
 ❯ curl -X POST http://localhost:9090/-/reload
 ```
+
+## FastAPI by Docker
+
+```bash
+❯ docker build ./app -t fastapi-todo-app
+
+❯ docker images | grep fastapi-todo-app
+fastapi-todo-app                     latest    2bf123e25958   2 minutes ago    184MB
+```

@@ -1,7 +1,6 @@
 {% extends "base.layout.tmpl" %} {% block content %}
 <div class="container">
-  {% for task_priority in tasks_priorities %} {% set task = task_priority[0] %}
-  {% set priority = task_priority[1] %}
+  {% for task in tasks_priorities %}
   <div class="card">
     <div class="card-header bg-success text-white">
       <div>完了済み</div>
@@ -44,7 +43,7 @@
     }).then((response) => {
       if (response.ok) {
         console.log("ok");
-        window.location.href = "/tasks";
+        window.location.href = "/completed-tasks";
       }
     });
   }
@@ -59,7 +58,7 @@
     }).then((response) => {
       if (response.ok) {
         console.log("ok");
-        window.location.href = "/tasks";
+        window.location.href = "/completed-tasks";
       }
     });
   }
