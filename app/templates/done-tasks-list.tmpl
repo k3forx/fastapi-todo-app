@@ -3,7 +3,10 @@
   {% for task in tasks_priorities %}
   <div class="card">
     <div class="card-header bg-success text-white">
-      <div>完了済み</div>
+      <div>
+        完了済み
+        <div class="float-end">完了日: {{ task.completed_at }}</div>
+      </div>
     </div>
     <div class="card-body">
       <h5 class="card-title">{{ task.title }}</h5>
