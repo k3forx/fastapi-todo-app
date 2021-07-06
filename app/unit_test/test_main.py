@@ -21,7 +21,6 @@ Base.metadata.create_all(bind=engine)
 def override_get_db():
     try:
         db = TestingSessionLocal()
-        print("add task")
         db.add(
             Task(
                 title="title 1",
@@ -34,9 +33,9 @@ def override_get_db():
             )
         )
         db.commit()
-        print("commit")
         yield db
     finally:
+        db.rollback()
         db.close()
 
 
