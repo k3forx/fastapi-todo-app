@@ -1,4 +1,3 @@
-import unittest
 from datetime import date, datetime
 
 import pytest
