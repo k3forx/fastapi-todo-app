@@ -110,7 +110,8 @@ class TestCrud(unittest.TestCase):
 
     def test_disabled_task(self):
         task_id = 1
-        actual = disabled_task(self.db, task_id)
+        disabled_info = {"is_disabled": True, "updated_at": datetime.now()}
+        actual = disabled_task(self.db, task_id, disabled_info)
         task = get_task_by_id(self.db, task_id)
         assert actual is None
         assert task.is_disabled

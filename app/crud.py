@@ -45,7 +45,7 @@ def update_task_completed_time(db: Session, task_id: int, completed_date: dict):
     return
 
 
-def disabled_task(db: Session, task_id: int):
-    db.query(Task).filter(Task.id == task_id).update({"is_disabled": True})
+def disabled_task(db: Session, task_id: int, disabled_info: dict):
+    db.query(Task).filter(Task.id == task_id).update(disabled_info)
     db.commit()
     return
