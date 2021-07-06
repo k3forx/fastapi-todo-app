@@ -120,7 +120,8 @@ def update_task_as_uncompleted(task_id: int, db: Session = Depends(get_db)):
 
 @app.put("/tasks/{task_id}/disabled")
 def disable_task_by_id(task_id: int, db: Session = Depends(get_db)):
-    crud.disabled_task(db, task_id)
+    disabled_info = {"is_disabled": True, "updated_at": datetime.now()}
+    crud.disabled_task(db, task_id, disabled_info)
     return JSONResponse(status_code=status.HTTP_200_OK, content={"message": "ok"})
 
 
