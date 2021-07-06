@@ -19,7 +19,7 @@ def get_all_todo_tasks(db: Session):
 
 def get_all_completed_tasks(db: Session):
     return (
-        db.query(Task.id, Task.title, Task.description, Priority.priority, Task.due_date)
+        db.query(Task.id, Task.title, Task.description, Priority.priority, Task.due_date, Task.completed_at)
         .filter(Task.completed_at.isnot(None), Task.is_disabled.is_(False))
         .outerjoin(Priority, Task.priority_id == Priority.id)
         .order_by(asc(Task.priority_id), asc(Task.due_date))

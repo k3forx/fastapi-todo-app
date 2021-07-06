@@ -36,9 +36,7 @@ def calc_remaining_days(due_date: date):
 
 @app.get("/tasks", response_class=HTMLResponse)
 def show_all_tasks(request: Request, db: Session = Depends(get_db)):
-    print("show_all_tasks is called")
     tasks = crud.get_all_todo_tasks(db)
-    print(tasks)
     return templates.TemplateResponse(
         "todo-tasks-list.tmpl",
         {"request": request, "tasks": tasks, "calc_remaining_days": calc_remaining_days},
