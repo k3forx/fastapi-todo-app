@@ -7,22 +7,14 @@ services:
     command: uvicorn main:app --reload --host 0.0.0.0 --port 8000
     ports:
       - 8000:8000
-    environment:
-      MYSQL_HOST: mysql
-      MYSQL_DATABASE: todo_app
-      MYSQL_USER: mysql
-      MYSQL_PASSWORD: mysql
-      MYSQL_ROOT_PASSWORD: root
+    env_file:
+      - env/mysql.env
 
   mysql:
     image: mysql:5.7
     container_name: mysql
-    environment:
-      MYSQL_HOST: mysql
-      MYSQL_DATABASE: todo_app
-      MYSQL_USER: mysql
-      MYSQL_PASSWORD: mysql
-      MYSQL_ROOT_PASSWORD: root
+    env_file:
+      - env/mysql.env
     ports:
       - 3306:3306
     volumes:
