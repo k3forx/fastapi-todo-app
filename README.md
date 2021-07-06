@@ -79,7 +79,7 @@ http://localhost:8000 にアクセスする。
 ## Unit test
 
 ```bash
-❯ pytest -vvvs --cov=unit_test --cov-report=term-missing unit_test
+❯ pytest -vvvs --cov=./ --cov-config=../.coveragerc --cov-report=term-missing unit_test
 ```
 
 ## ORM
