@@ -84,7 +84,7 @@ def show_task_by_id(request: Request, task_id: int, db: Session = Depends(get_db
     return templates.TemplateResponse("task-edit.tmpl", {"request": request, "task": task})
 
 
-@app.post("/tasks/{task_id}")
+@app.put("/tasks/{task_id}")
 def edit_task_by_id(
     task_id: int,
     title: str = Form(...),

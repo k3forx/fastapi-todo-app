@@ -2,18 +2,18 @@
 <div class="container">
   <h2 class="new-task-title text-center">編集</h2>
 
-  <form method="POST" action="" class="" novalidate>
+  <form method="" action="" class="" id="edit-form" novalidate>
     <div class="new-task">
       <div class="mb-3">
         <label for="title" class="form-label"
           >タイトル</label
         >
-        <input type="title" class="form-control" value="{{ task.title }}" name="title"/>
+        <input type="title" class="form-control" value="{{ task.title }}" name="title" id="title"/>
       </div>
 
       <div class="mb-3">
         <label for="description" class="form-label">詳細</label>
-        <textarea class="form-control" rows="5" name="description">{{ task.description }}</textarea>
+        <textarea class="form-control" rows="5" name="description" id="description">{{ task.description }}</textarea>
       </div>
 
       <div class="mb-3">
@@ -21,7 +21,7 @@
           >優先度</label
         >
 
-        <select class="form-select" aria-label="Default select example" name="priority_id_str">
+        <select class="form-select" aria-label="Default select example" name="priority_id_str" id="priority_id_str">
           <option>優先度を選択</option>
           <!-- TODO: Remove similar code -->
           <option value="1" {% if task.priority_id == 1 %} selected {% endif %}>高</option>
@@ -42,7 +42,7 @@
         />
       </div>
 
-      <input type="submit" class="btn btn-primary float-end" value="保存" />
+      <input type="button" class="btn btn-primary float-end" onclick="updateTaskById({{ task.id }})" value="保存" />
     </div>
   </form>
 </div>
@@ -54,5 +54,26 @@
     minDate: new Date(),
     defaultViewDate: elem.value,
   });
+
+  function updateTaskById(taskId) {
+    var formData = new FormData();
+
+    formData.append("task_id", taskId);
+    formData.append("title", document.getElementById("title").value)
+    formData.append("description", document.getElementById("description").value)
+    formData.append("priority_id_str", document.getElementById("priority_id_str").value)
+    formData.append("due_date_str", document.getElementById("due_date_str").value)
+
+    fetch("/tasks/" + taskId, {
+      method: "PUT",
+      body: formData,
+      redirect: "follow",
+    }).then((response) => {
+      if (response.ok) {
+        console.log("ok");
+        window.location.href = "/tasks";
+      }
+    });
+  };
 </script>
 {% endblock %}
