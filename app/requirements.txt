@@ -3,6 +3,6 @@ uvicorn==0.14.0
 SQLAlchemy==1.4.20
 pymysql==1.0.2
 jinja2==3.0.1
-python-multipart==0.0.5
+python-multipart==0.0.7
 aiofiles==0.7.0
 prometheus-fastapi-instrumentator==5.7.1
